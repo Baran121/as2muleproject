@@ -1,0 +1,10 @@
+{
+  "sampleData": {
+    "135c03ae-468f-4020-9d3f-690a4ebf4c78": {
+      "payload": "sample_data/receive.xml"
+    },
+    "a203bb5e-5008-4b84-8f96-732e9a5dce2b": {
+      "payload": "sample_data/jsonon.dwl"
+    }
+  }
+}

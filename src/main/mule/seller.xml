@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:as2-mule4="http://www.mulesoft.org/schema/mule/as2-mule4"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/as2-mule4 http://www.mulesoft.org/schema/mule/as2-mule4/current/mule-as2-mule4.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<as2-mule4:listener-config name="AS2_Connector_Listener_config" doc:name="AS2 Connector Listener config" 
+	doc:id="c00ceab7-7a50-4e37-8bd6-add6827a7b29" httpListenerConfig="HTTP_Listener_config1" 
+	securityLevel="ENCRYPTED">
+		<as2-mule4:self-config as2Name="shell" x509Alias="shell" email="dev.selling@shell.com" />
+		<as2-mule4:partner-config as2Name="ECOLAB" x509Alias="ecolab" email="dev.buying@ecolab.com" />
+		<as2-mule4:key-store-config keystorePassword="Admin123!" keystorePath="certs/certificate.sender" 
+		privateKeyPassword="Admin123!" />
+	</as2-mule4:listener-config>
+	<http:listener-config name="HTTP_Listener_config1" doc:name="HTTP Listener config" doc:id="73020c22-45f4-4c1c-add8-39f0af8860c0" >
+		<http:listener-connection host="0.0.0.0" port="${http.private.port}" />
+	</http:listener-config>
+	<configuration-properties doc:name="Configuration properties" doc:id="13da37fa-0e21-4ffd-8d1f-5da4f5ea0f31" file="as2-dev.properties" />
+	<flow name="Seller-Flow" doc:id="11e48beb-a489-46dd-bb09-eff185ed9f8c" >
+		<as2-mule4:as2-listener doc:id="15fd93c6-fcec-4103-87be-e7540435a40e" doc:name="" config-ref="AS2_Connector_Listener_config" path="/seller"/>
+		<ee:transform doc:name="Transform Message" doc:id="f1787078-8a04-471f-a5ee-8c43065b3c57" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output text/plain
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="dc454612-691f-49d4-b77a-e9c0d3ac5106" message="processed"/>
+	
+</flow>
+	
+</mule>

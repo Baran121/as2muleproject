@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<types:mule xmlns:types="http://www.mulesoft.org/schema/mule/types">
+  <types:catalog>
+    <types:type name="simpl" format="java">
+      <types:shape format="raml"><![CDATA[#%RAML 1.0 DataType
+type: string]]></types:shape>
+    </types:type>
+    <types:type name="idoc" format="xml">
+      <types:example format="xml" element="{http://Microsoft.LobServices.Sap/2007/03/Idoc/3/_x002F_DS1_x002F_HM_C_TKT_RAIL_BOL//620/Receive}Receive" location="examples/SHELLP94.AS2LIAISONEU.file.20200423094206AD0E6592.0000001462120259~GC~~~N~.in"/>
+    </types:type>
+  </types:catalog>
+</types:mule>

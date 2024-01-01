@@ -1,0 +1,15 @@
+api.id: "18244321"
+
+proxy:
+    host: "0.0.0.0"
+    path: "/*"
+    port: "8091"
+    responseTimeout: "200000"
+    
+    
+
+implementation:
+    host: "oip-plt-ext-core-web-api-910-q.azurewebsites.net"
+    port: "443" 
+    path: "/api/v1"
+    protocol: "HTTPS"

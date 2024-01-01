@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:anypoint-mq="http://www.mulesoft.org/schema/mule/anypoint-mq" xmlns:tls="http://www.mulesoft.org/schema/mule/tls"
+	xmlns:x12="http://www.mulesoft.org/schema/mule/x12"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:as2-mule4="http://www.mulesoft.org/schema/mule/as2-mule4" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/as2-mule4 http://www.mulesoft.org/schema/mule/as2-mule4/current/mule-as2-mule4.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/x12 http://www.mulesoft.org/schema/mule/x12/current/mule-x12.xsd
+http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/current/mule-tls.xsd
+http://www.mulesoft.org/schema/mule/anypoint-mq http://www.mulesoft.org/schema/mule/anypoint-mq/current/mule-anypoint-mq.xsd">
+	
+	
+	<as2-mule4:send-config name="AS2_Connector_Send_config" doc:name="AS2 Connector Send config" doc:id="6d758cb7-fd55-4fac-9ffb-2566106c70d7" >
+		<as2-mule4:connection connectionIdleTimeoutUnits="NANOSECONDS" partnerURL="https://b2b-inbound-as2-pvb4.us-e1.cloudhub.io/receive-as2" >
+			<tls:context >
+				<tls:trust-store insecure="true" />
+			</tls:context>
+		</as2-mule4:connection>
+		<as2-mule4:self-config as2Name="shell" x509Alias="shell" email="admin@shellcom" />
+		<as2-mule4:partner-config as2Name="ECOLAB" x509Alias="ecolab" email="dev.selling@ecolab.com" />
+		<as2-mule4:requester-config encryptionAlgorithm="AES192_GCM" compressionType="ZLIB" messageIntegrityCheckAlgorithm="SHA1" mdnMessageIntegrityCheckAlgorithm="SHA1" requestReceipt="SIGNED_REQUIRED"/>
+		<as2-mule4:keystore-config keystorePassword="Admin123!" keystorePath="certs/certificate.sender" privateKeyPassword="Admin123!" />
+	</as2-mule4:send-config>
+	<anypoint-mq:config name="Anypoint_MQ_Config" doc:name="Anypoint MQ Config" doc:id="fb14906c-88a9-48ee-9cea-bbc5170ba696" >
+		<anypoint-mq:connection clientId="8bf3f791f157471398f7537874c22330" clientSecret="521F2167E77a4C97bCe01e8D6Bae766C" />
+	</anypoint-mq:config>
+	<flow name="Buyer-Flow" doc:id="11b237d4-81c6-4723-8ebb-4fce3ef90a11" >
+		<http:listener doc:name="Listener" doc:id="aec47cb8-50e6-4495-baa1-acc8c1e99c45" path="buyer" config-ref="HTTP_Listener_config1"/>
+		<as2-mule4:send-with-sync-mdn doc:name="Send with Sync MDN" doc:id="6e137ec7-fd2a-481b-9f9a-38d128f21c08" config-ref="AS2_Connector_Send_config">
+		</as2-mule4:send-with-sync-mdn>
+		<logger level="INFO" doc:name="Logger" doc:id="ea0f2c5b-934d-48b1-9779-42bfa649f304" message="delivered successfuly"/>
+	</flow>
+</mule>
